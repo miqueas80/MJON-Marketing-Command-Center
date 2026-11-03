@@ -22,7 +22,7 @@ jobs:
         run: node --test tests/*.test.mjs
       - name: Verify source syntax
         run: |
-          for f in src/*.mjs sw.js; do node --check "$f"; done
+          for f in src/*.mjs backend/*.mjs sw.js; do node --check "$f"; done
   deploy:
     needs: verify
     runs-on: ubuntu-latest
