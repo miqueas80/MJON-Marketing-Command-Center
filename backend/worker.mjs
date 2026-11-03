@@ -54,8 +54,23 @@ export async function handleAPI(request,env,ctx){
   if(expected===null||expected===undefined)return fail(428,'if_match_required');
   const length=Number(request.headers.get('content-length'));
   if(Number.isFinite(length)&&length>MAX_BYTES)return fail(413,'payload_too_large');
-  const raw=await request.text();
-  if(new TextEncoder().encode(raw).length>MAX_BYTES)return fail(413,'payload_too_large');
+  // Read in bounded chunks: Content-Length can be missing or dishonest.
+  let raw='';
+  let size=0;
+  const reader=request.body?.getReader();
+  if(reader){
+    const decoder=new TextDecoder();
+    try{
+      while(true){
+        const {done,value}=await reader.read();
+        if(done)break;
+        size+=value.byteLength;
+        if(size>MAX_BYTES){await reader.cancel();return fail(413,'payload_too_large');}
+        raw+=decoder.decode(value,{stream:true});
+      }
+      raw+=decoder.decode();
+    }finally{reader.releaseLock();}
+  }
   let data;try{data=validateSnapshot(JSON.parse(raw));}catch(e){return fail(422,['invalid_snapshot','invalid_record','invalid_id','duplicate_record','too_many_records'].includes(e.message)?e.message:'invalid_json');}
   const body=JSON.stringify(data);
   if(new TextEncoder().encode(body).length>MAX_BYTES)return fail(413,'payload_too_large');
