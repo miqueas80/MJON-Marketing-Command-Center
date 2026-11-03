@@ -36,3 +36,9 @@ WhatsApp Business sigue desconectado. No se accede a los chats, no se envían me
 ## Próximas etapas
 
 Consultar [docs/ROADMAP.md](docs/ROADMAP.md): Cloudflare Workers + D1, autenticación, migraciones privadas, permisos server-side, integración oficial de WhatsApp y automatización supervisada.
+
+## v0.2 — Respaldo privado opcional en Cloudflare
+
+El código fuente incluye un Worker protegido por Cloudflare Access, una base D1 creada y la interfaz para respaldar/restaurar desde la versión privada del Worker. **La conexión todavía NO está habilitada:** Cloudflare Access debe activarse antes de desplegar. GitHub Pages continúa local y sin credenciales, y WhatsApp sigue desconectado.
+
+Consultá [la guía de configuración Cloudflare](docs/CLOUD_V02.md). No uses datos privados reales hasta completar autenticación, pruebas de acceso y despliegue.

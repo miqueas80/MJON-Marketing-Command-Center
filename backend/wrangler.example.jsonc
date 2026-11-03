@@ -1,0 +1,16 @@
+{
+  "name": "mjon-marketing-command-private",
+  "main": "./worker.mjs",
+  "compatibility_date": "2026-11-03",
+  "assets": { "directory": "../dist", "binding": "ASSETS", "run_worker_first": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mjon-marketing-private",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "observability": { "enabled": true },
+  "workers_dev": true
+}
